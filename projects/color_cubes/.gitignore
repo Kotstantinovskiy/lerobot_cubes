@@ -8,3 +8,15 @@ camera_check/
 *.safetensors
 *.pt
 *.pth
+
+# Publish only the current dataset; keep other recordings and diagnostics local.
+!/data/
+/data/*
+!/data/color_cubes_vga/
+/data/color_cubes_vga/*
+!/data/color_cubes_vga/data/
+!/data/color_cubes_vga/data/**
+!/data/color_cubes_vga/meta/
+!/data/color_cubes_vga/meta/**
+!/data/color_cubes_vga/videos/
+!/data/color_cubes_vga/videos/**
