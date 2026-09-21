@@ -1,0 +1,10 @@
+data/
+__pycache__/
+camera_check/
+*.mp4
+*.mov
+*.avi
+*.mkv
+*.safetensors
+*.pt
+*.pth
