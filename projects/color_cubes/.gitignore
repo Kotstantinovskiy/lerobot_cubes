@@ -8,6 +8,7 @@ camera_check/
 *.safetensors
 *.pt
 *.pth
+config.local.json
 
 # Publish only the current dataset; keep other recordings and diagnostics local.
 !/data/

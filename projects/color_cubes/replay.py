@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 
 from lerobot.robots import RobotConfig, make_robot_from_config, so_follower  # noqa: F401
+from record import load_config
 
 PROJECT = Path(__file__).resolve().parent
 
@@ -30,10 +31,11 @@ def slow_trajectory(actions, speed):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--episode", type=int, required=True)
+    parser.add_argument("--config", type=Path, default=PROJECT / "config.json")
     parser.add_argument("--speed", type=float, default=1.0, help="Playback speed in (0, 1]; 0.5 is half speed")
     parser.add_argument("--dry-run", action="store_true", help="Validate and describe without opening the robot")
     args = parser.parse_args()
-    config = json.loads((PROJECT / "config.json").read_text())
+    config = load_config(args.config)
     root = PROJECT / config["dataset_root"]
     info = json.loads((root / "meta/info.json").read_text())
     frames = pd.concat([pd.read_parquet(p) for p in sorted((root / "data").glob("**/*.parquet"))])
@@ -49,13 +51,17 @@ def main():
     approach_s = 4 / args.speed
     print(f"Episode {args.episode}, speed {args.speed:g}x, {len(actions)} commands, "
           f"approximately {len(actions) / fps:.1f} seconds plus {approach_s:g} seconds approach.", flush=True)
-    if args.dry_run:
-        return
     fields = dict(config["robot"])
     fields.update(cameras={}, max_relative_target=10.0)
     robot = make_robot_from_config(draccus.decode(RobotConfig, fields))
     if set(names) != set(robot.action_features):
         raise ValueError("Recorded joints do not match robot")
+    if set(robot.calibration) != set(robot.bus.motors):
+        raise RuntimeError(f"Missing or incomplete follower calibration: {robot.calibration_fpath}")
+    print(f"Calibration loaded: {robot.calibration_fpath}", flush=True)
+    if args.dry_run:
+        print("Dry run: no ports opened; physical motor calibration has not been checked.", flush=True)
+        return
     try:
         robot.bus.connect()
         if not robot.is_calibrated:

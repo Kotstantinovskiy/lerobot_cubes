@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import sys
 
-from record import PROJECT, positive_int, validate_hardware
+from record import PROJECT, load_config, positive_int, validate_hardware
 
 
 def build_command(config, cameras=False, seconds=None):
@@ -40,7 +40,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Показать команду без подключения оборудования")
     args = parser.parse_args()
     try:
-        config = json.loads(args.config.read_text())
+        config = load_config(args.config)
         command = build_command(config, args.cameras, args.seconds)
         if args.dry_run:
             print(shlex.join(command))

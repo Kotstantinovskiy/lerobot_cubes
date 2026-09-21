@@ -3,6 +3,7 @@
     "type": "so101_follower",
     "port": "/dev/tty.usbmodem5B421337891",
     "id": "my_so100_follower",
+    "calibration_dir": "calibration/robots/so_follower",
     "cameras": {
       "top": {"type": "opencv", "index_or_path": 0, "macos_device_name": "Sport Cam", "macos_explicit_mode": true, "width": 1280, "height": 720, "fps": 30, "warmup_s": 8, "read_timeout_ms": 500},
       "wrist": {"type": "opencv", "index_or_path": 1, "macos_device_name": "Innomaker-U20CAM-1080p-S1", "macos_explicit_mode": true, "width": 640, "height": 480, "fps": 30, "warmup_s": 8, "read_timeout_ms": 500}
@@ -11,7 +12,8 @@
   "teleop": {
     "type": "so101_leader",
     "port": "/dev/tty.usbmodem5B421346481",
-    "id": "my_so100_leader"
+    "id": "my_so100_leader",
+    "calibration_dir": "calibration/teleoperators/so_leader"
   },
   "repo_id": "local/color_cubes_vga",
   "dataset_root": "data/color_cubes_vga",

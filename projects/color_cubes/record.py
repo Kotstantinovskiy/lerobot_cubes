@@ -13,6 +13,24 @@ import sys
 PROJECT = Path(__file__).resolve().parent
 
 
+def load_config(path=PROJECT / "config.json"):
+    """Resolve portable dataset/calibration paths relative to the config file."""
+    path = Path(path).expanduser().resolve()
+    config = json.loads(path.read_text())
+    for section in ("robot", "teleop"):
+        value = config.get(section, {}).get("calibration_dir")
+        if value:
+            directory = Path(value).expanduser()
+            if not directory.is_absolute():
+                directory = path.parent / directory
+            config[section]["calibration_dir"] = str(directory.resolve())
+    root = Path(config["dataset_root"]).expanduser()
+    if not root.is_absolute():
+        root = path.parent / root
+    config["dataset_root"] = str(root.resolve())
+    return config
+
+
 def positive_int(value):
     number = int(value)
     if number < 1:
@@ -80,7 +98,7 @@ def main():
     parser.add_argument("--dry-run", action="store_true", help="Показать команду без подключения устройств")
     args = parser.parse_args()
     try:
-        config = json.loads(args.config.read_text())
+        config = load_config(args.config)
         if args.color not in config["tasks"]:
             raise ValueError(f"Доступные цвета: {', '.join(config['tasks'])}")
         command, root = build_command(config, args.color, args.episodes, args.resume)

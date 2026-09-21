@@ -9,7 +9,7 @@ import sys
 import time
 from unittest.mock import patch
 
-from record import PROJECT, build_command, positive_int
+from record import PROJECT, build_command, load_config, positive_int
 from lerobot.scripts import lerobot_record as recorder
 
 
@@ -17,7 +17,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--seconds", type=positive_int, default=60)
     args = parser.parse_args()
-    config = json.loads((PROJECT / "config.json").read_text())
+    config = load_config()
     root = PROJECT / "camera_check" / f"recording-check-{time.time_ns()}"
     config.update(dataset_root=str(root), repo_id="local/diagnostic_camera_check", episode_time_s=args.seconds,
                   display_data=False)

@@ -20,6 +20,7 @@ from lerobot.datasets.image_writer import AsyncImageWriter
 from lerobot.robots import RobotConfig, make_robot_from_config, so_follower  # noqa: F401
 from lerobot.teleoperators import TeleoperatorConfig, make_teleoperator_from_config, so_leader  # noqa: F401
 from lerobot.utils.robot_utils import precise_sleep
+from record import load_config
 
 PROJECT = Path(__file__).resolve().parent
 
@@ -38,7 +39,7 @@ def main():
         parser.error("Specify both width and height or neither")
     if args.width is not None and min(args.width, args.height) <= 0:
         parser.error("Image size must be positive")
-    config = json.loads((PROJECT / "config.json").read_text())
+    config = load_config()
     if args.width is not None:
         for camera in config["robot"]["cameras"].values():
             camera.update(width=args.width, height=args.height)
