@@ -32,11 +32,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--episode", type=int, required=True)
     parser.add_argument("--config", type=Path, default=PROJECT / "config.json")
+    parser.add_argument("--dataset", type=Path, help="Dataset folder; defaults to dataset_root from the config")
     parser.add_argument("--speed", type=float, default=1.0, help="Playback speed in (0, 1]; 0.5 is half speed")
     parser.add_argument("--dry-run", action="store_true", help="Validate and describe without opening the robot")
     args = parser.parse_args()
     config = load_config(args.config)
-    root = PROJECT / config["dataset_root"]
+    root = args.dataset.expanduser().resolve() if args.dataset else Path(config["dataset_root"])
     info = json.loads((root / "meta/info.json").read_text())
     frames = pd.concat([pd.read_parquet(p) for p in sorted((root / "data").glob("**/*.parquet"))])
     frames = frames[frames.episode_index == args.episode].sort_values("frame_index")

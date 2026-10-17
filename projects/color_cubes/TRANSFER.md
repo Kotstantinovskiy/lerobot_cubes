@@ -51,7 +51,7 @@ cp projects/color_cubes/config.json projects/color_cubes/config.local.json
 ## 4. Проверить без движения
 
 ```bash
-.venv/bin/python projects/color_cubes/replay.py --config projects/color_cubes/config.local.json --episode 5 --speed 0.5 --dry-run
+.venv/bin/python projects/color_cubes/replay.py --config projects/color_cubes/config.local.json --dataset projects/color_cubes/data/color_cubes_vga --episode 5 --speed 0.5 --dry-run
 ```
 
 Команда читает действия и файл калибровки, но не открывает порт и не проверяет реальные моторы. Эпизоды: красный — 0, 1, 2; синий — 3, 4; жёлтый — 5.
@@ -61,7 +61,7 @@ cp projects/color_cubes/config.json projects/color_cubes/config.local.json
 Повтор идёт по сохранённым командам без коррекции по изображению. Сохрани положение основания руки и рабочей поверхности, поставь кубик в исходное положение и освободи рабочую зону. Затем для жёлтого эпизода:
 
 ```bash
-.venv/bin/python projects/color_cubes/replay.py --config projects/color_cubes/config.local.json --episode 5 --speed 0.5
+.venv/bin/python projects/color_cubes/replay.py --config projects/color_cubes/config.local.json --dataset projects/color_cubes/data/color_cubes_vga --episode 5 --speed 0.5
 ```
 
 Перед движением скрипт проверяет соответствие калибровки моторным настройкам. При несовпадении он останавливается: не подменяй значения ради обхода проверки. Подход к старту — 8 секунд, траектория на исходном Mac занимала около 62,5 секунды. Остановка — Ctrl+C; при выходе отключается момент моторов.
