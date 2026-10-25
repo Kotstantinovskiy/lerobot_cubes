@@ -61,7 +61,7 @@ def build_command(config, color, episodes, resume):
         "dataset.vcodec": "h264",
         "dataset.push_to_hub": False,
         "display_data": config.get("display_data", True),
-        "play_sounds": False,
+        "play_sounds": config.get("play_sounds", False),
         "resume": resume,
     })
     command = [sys.executable, "-m", "lerobot.scripts.lerobot_record"]

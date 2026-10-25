@@ -21,10 +21,11 @@
   "episode_time_s": 30,
   "reset_time_s": 20,
   "display_data": false,
+  "play_sounds": true,
   "tasks": {
-    "red": "Pick up the red cube and place it in the tray.",
-    "blue": "Pick up the blue cube and place it in the tray.",
-    "green": "Pick up the green cube and place it in the tray.",
-    "yellow": "Pick up the yellow cube and place it in the tray."
+    "red": "Pick up the red cube and place it on the platform.",
+    "blue": "Pick up the blue cube and place it on the platform.",
+    "green": "Pick up the green cube and place it on the platform.",
+    "yellow": "Pick up the yellow cube and place it on the platform."
   }
 }
